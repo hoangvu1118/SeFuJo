@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: sefujo-db
+    environment:
+      POSTGRES_DB: sefujo
+      POSTGRES_USER: hvu
+      POSTGRES_PASSWORD: 11182005
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
