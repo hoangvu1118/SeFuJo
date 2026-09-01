@@ -65,7 +65,6 @@ public class AuthService {
         // 3. save to database
         User saveUser = userRepository.save(newUser);
 
-        // System.out.println("User registered: " + saveUser.getEmail());
 
         // 4. Convert to safe Response DTO
         UserResponse userResponse = new UserResponse();
