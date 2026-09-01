@@ -2,6 +2,11 @@ package com.sefujo.user;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.jspecify.annotations.Nullable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="users")
@@ -13,10 +18,17 @@ public class User {
     private long id;
 
     private String email;
-    private String password;
     private String firstName;
     private String lastName;
-    private String createdDate;
-    private String updatedDate;
+    private String role;
+
+    @Column(name = "password_hash")
+    private String password;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
 }

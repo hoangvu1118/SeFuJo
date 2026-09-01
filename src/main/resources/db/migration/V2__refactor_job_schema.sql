@@ -1,3 +1,13 @@
+CREATE TABLE company (
+                         id BIGSERIAL PRIMARY KEY,
+
+                         name VARCHAR(255) NOT NULL,
+                         website VARCHAR(500),
+
+                         created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                         updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Add new columns
 ALTER TABLE jobs
     ADD COLUMN company_id BIGINT,
@@ -22,12 +32,3 @@ ALTER TABLE jobs
         FOREIGN KEY (company_id)
             REFERENCES company(id);
 
-CREATE TABLE company (
-       id BIGSERIAL PRIMARY KEY,
-
-       name VARCHAR(255) NOT NULL,
-       website VARCHAR(500),
-
-       created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-       updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
