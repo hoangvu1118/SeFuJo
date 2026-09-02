@@ -4,6 +4,7 @@ import com.sefujo.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Set;
 
 @Entity
 @Data
+@Table(name="search_profiles")
 public class SearchProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +26,13 @@ public class SearchProfile {
     private String name;
 
     @Column(name="level")
-    private EmploymentLevel level;
+    private String level;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     @ElementCollection
     @CollectionTable(

@@ -1,2 +1,2 @@
-ALTER TABLE users
-    ADD COLUMN role VARCHAR(255);
+ALTER TABLE search_profiles
+    ADD COLUMN level VARCHAR(255);
