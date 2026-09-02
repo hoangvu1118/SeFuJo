@@ -23,6 +23,9 @@ public class SearchProfile {
     @Column(nullable = false)
     private String name;
 
+    @Column(name="level")
+    private EmploymentLevel level;
+
     @ElementCollection
     @CollectionTable(
             name="search_profile_job_titles",

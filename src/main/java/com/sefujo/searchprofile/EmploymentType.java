@@ -1,11 +1,8 @@
 package com.sefujo.searchprofile;
 
 public enum EmploymentType {
-    INTERNSHIP,
-    FRESHER,
-    JUNIOR,
-    MIDDLE,
-    SENIOR,
-    MANAGER,
-    OTHER
+    FULL_TIME,
+    PART_TIME,
+    CONTRACT,
+    INTERNSHIP
 }
