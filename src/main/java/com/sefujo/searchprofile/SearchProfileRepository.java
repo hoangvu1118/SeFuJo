@@ -2,6 +2,14 @@ package com.sefujo.searchprofile;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface SearchProfileRepository extends JpaRepository<SearchProfile, Long> {
+import java.util.List;
+import java.util.Optional;
 
+public interface SearchProfileRepository extends JpaRepository<SearchProfile, Long> {
+    List<SearchProfile> findAllByUserId(Long userId);
+
+    Optional<SearchProfile> findByIdAndUserId(
+            Long profileId,
+            Long userId
+    );
 }

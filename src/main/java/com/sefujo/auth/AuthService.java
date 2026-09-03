@@ -1,5 +1,7 @@
 package com.sefujo.auth;
 
+import com.sefujo.auth.dto.LoginRequest;
+import com.sefujo.auth.dto.RegisterRequest;
 import com.sefujo.common.exception.EmailAlreadyExistsException;
 import com.sefujo.common.security.CustomUserDetail;
 import com.sefujo.common.security.CustomUserDetailService;
@@ -9,19 +11,14 @@ import com.sefujo.user.UserRepository;
 import com.sefujo.user.UserResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Service
 @AllArgsConstructor

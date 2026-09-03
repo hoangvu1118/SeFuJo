@@ -69,4 +69,15 @@ public class SearchProfile {
     @Column(name = "workplace_type")
     private Set<WorkplaceType> workplaceTypes =
             new HashSet<>();
+
+    @ElementCollection
+    @CollectionTable(
+            name = "search_profile_locations",
+            joinColumns = @JoinColumn(name = "search_profile_id")
+    )
+    @Column(name = "location")
+    private Set<String> locations =
+            new HashSet<>();
+
+
 }
