@@ -6,10 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SearchProfileRepository extends JpaRepository<SearchProfile, Long> {
-    List<SearchProfile> findAllByUserId(Long userId);
+    Optional<SearchProfile> findByUserId(Long userId);
 
-    Optional<SearchProfile> findByIdAndUserId(
-            Long profileId,
-            Long userId
-    );
 }

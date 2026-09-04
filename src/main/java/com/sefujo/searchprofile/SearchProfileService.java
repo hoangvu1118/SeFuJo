@@ -1,5 +1,7 @@
 package com.sefujo.searchprofile;
 
+import com.sefujo.common.exception.ResourceNotFound;
+import com.sefujo.common.exception.SearchProfileAlreadyExist;
 import com.sefujo.common.exception.UserNotAuthenticated;
 import com.sefujo.common.security.CustomUserDetail;
 import com.sefujo.searchprofile.dto.CreateSearchProfileRequest;
@@ -23,38 +25,31 @@ public class SearchProfileService {
     SearchProfileRepository searchProfileRepository;
     UserRepository userRepository;
 
-    public SearchProfileResponse createSearchProfile(CreateSearchProfileRequest request) {
-
-        LocalDateTime now = LocalDateTime.now();
-        SearchProfile searchProfile = getSearchProfile(request, now);
-
-        SearchProfile saved = searchProfileRepository.save(searchProfile);
-
+    private SearchProfileResponse getSearchProfileResponse(SearchProfile saved) {
         SearchProfileResponse response = new SearchProfileResponse();
         response.setId(saved.getId());
-        response.setName(searchProfile.getName());
-        response.setLevel(searchProfile.getLevel());
-        
+        response.setName(saved.getName());
+        response.setLevel(saved.getLevel());
+
         response.setEmploymentTypes(saved.getEmploymentTypes());
         response.setJobTitles(saved.getJobTitles());
         response.setLocations(saved.getLocations());
         response.setSkills(saved.getSkills());
         response.setWorkplaceTypes(saved.getWorkplaceTypes());
-        
+
         return response;
     }
 
-    public SearchProfile getSearchProfile(CreateSearchProfileRequest request, LocalDateTime now) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication == null) {
-            throw new UserNotAuthenticated("Username not Authenticated yet");
-        }
-        CustomUserDetail userDetail = (CustomUserDetail) authentication.getPrincipal();
+    public SearchProfileResponse createSearchProfile(CreateSearchProfileRequest request) {
 
-        if(userDetail == null) {
-            throw new UsernameNotFoundException("Username not Authenticated yet");
+        LocalDateTime now = LocalDateTime.now();
+        long userId = getCurrentUserId();
+
+        SearchProfile searchProfileCheck = searchProfileRepository.findByUserId(userId).orElse(null);
+        if (searchProfileCheck != null) {
+            throw new SearchProfileAlreadyExist("Search Profile Already Exist, please Edit/ Delete the previous version");
         }
-        Long userId = userDetail.getId();
+
         User currentUser = userRepository.findById(userId).orElse(null);
 
         SearchProfile searchProfile = new SearchProfile();
@@ -69,7 +64,68 @@ public class SearchProfileService {
         searchProfile.setSkills(request.getSkills());
         searchProfile.setWorkplaceTypes(request.getWorkplaceTypes());
 
-        return searchProfile;
+        SearchProfile saved = searchProfileRepository.save(searchProfile);
+
+        return getSearchProfileResponse(saved);
     }
 
+
+    public SearchProfileResponse getMySearchProfile() {
+        long userId = getCurrentUserId();
+        SearchProfile searchProfile = searchProfileRepository.findByUserId(userId).orElse(null);
+        if (searchProfile == null) {
+            throw new ResourceNotFound("Search Profile Not Found from UserID: " + userId);
+        }
+        return getSearchProfileResponse(searchProfile);
+    }
+
+    public SearchProfileResponse updateSearchProfile(UpdateSearchProfileRequest request) {
+        LocalDateTime now = LocalDateTime.now();
+        long userId = getCurrentUserId();
+        SearchProfile profile = searchProfileRepository.findByUserId(userId).orElse(null);
+        if (profile == null) {
+            throw new ResourceNotFound("Search Profile Not Found from UserID: " + userId);
+        }
+        if (request.getName() != null) {
+            profile.setName(request.getName());
+        }
+
+        if (request.getLevel() != null) {
+            profile.setLevel(request.getLevel());
+        }
+
+        if (request.getSkills() != null) {
+            profile.setSkills(request.getSkills());
+        }
+
+        if (request.getLocations() != null) {
+            profile.setLocations(request.getLocations());
+        }
+
+        if (request.getJobTitles() != null) {
+            profile.setJobTitles(request.getJobTitles());
+        }
+
+        if (request.getEmploymentTypes() != null) {
+            profile.setEmploymentTypes(request.getEmploymentTypes());
+        }
+        if (request.getWorkplaceTypes() != null) {
+            profile.setWorkplaceTypes(request.getWorkplaceTypes());
+        }
+        SearchProfile saved = searchProfileRepository.save(profile);
+        return getSearchProfileResponse(saved);
+    }
+
+    private long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null) {
+            throw new UserNotAuthenticated("Username not Authenticated yet");
+        }
+        CustomUserDetail userDetail = (CustomUserDetail) authentication.getPrincipal();
+
+        if(userDetail == null) {
+            throw new UsernameNotFoundException("Username not Authenticated yet");
+        }
+        return userDetail.getId();
+    }
 }
