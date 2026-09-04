@@ -116,6 +116,15 @@ public class SearchProfileService {
         return getSearchProfileResponse(saved);
     }
 
+    public void deleteSearchProfile() {
+        long userId = getCurrentUserId();
+        SearchProfile profile = searchProfileRepository
+                .findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFound("Search Profile Not Found from UserID: " + userId));
+
+        searchProfileRepository.delete(profile);
+    }
+
     private long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication == null) {

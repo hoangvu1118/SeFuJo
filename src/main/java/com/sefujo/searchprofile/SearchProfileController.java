@@ -33,5 +33,10 @@ public class SearchProfileController {
         return ResponseEntity.ok(searchProfileResponse);
     }
 
+    @DeleteMapping()
+    public ResponseEntity<Void> deleteSearchProfile(){
+        searchProfileService.deleteSearchProfile();
+        return ResponseEntity.noContent().build();
+    }
 
 }
