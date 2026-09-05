@@ -1,7 +1,6 @@
 package com.sefujo.common.health;
 
 import com.sefujo.common.security.CustomUserDetail;
-import com.sefujo.searchprofile.EmploymentLevel;
 import com.sefujo.searchprofile.SearchProfile;
 import com.sefujo.searchprofile.SearchProfileRepository;
 import com.sefujo.user.User;
