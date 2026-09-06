@@ -1,4 +1,4 @@
-package com.sefujo.job;
+package com.sefujo.job.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -6,12 +6,13 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="platforms")
+@Table(name="company")
 @Data
-public class Platform {
+public class Company {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
+    @Column(name="id")
+    private long id;
 
     private String name;
     private String website;
@@ -21,4 +22,5 @@ public class Platform {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
 }

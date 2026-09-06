@@ -1,4 +1,4 @@
-package com.sefujo.job;
+package com.sefujo.job.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -24,6 +24,7 @@ public class JobPosting {
     private String externalJobId;
 
     private String status;
+
     @Column(name="source_published_at")
     private LocalDateTime sourcePublishedAt; // Track when the Platform publishes
     @Column(name="first_seen_at")

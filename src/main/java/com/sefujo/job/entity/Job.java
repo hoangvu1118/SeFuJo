@@ -1,4 +1,4 @@
-package com.sefujo.job;
+package com.sefujo.job.entity;
 
 import com.sefujo.searchprofile.EmploymentType;
 import com.sefujo.searchprofile.WorkplaceType;
@@ -14,7 +14,10 @@ public class Job {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
-    private long companyId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", nullable = false)
+    private Company company;
 
     private String title;
 
