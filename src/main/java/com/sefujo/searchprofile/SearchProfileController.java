@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/searchProfiles")
+@RequestMapping("/api/v1/searchProfiles")
 @AllArgsConstructor
 public class SearchProfileController {
     SearchProfileService searchProfileService;

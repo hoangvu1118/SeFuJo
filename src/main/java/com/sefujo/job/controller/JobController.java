@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/job")
+@RequestMapping("/api/v1/job")
 @AllArgsConstructor
 public class JobController {
     JobService jobService;
