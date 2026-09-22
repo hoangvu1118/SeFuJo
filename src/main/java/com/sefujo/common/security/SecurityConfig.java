@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .sessionManagement(sess
                         -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()   // login, register = public
+                        .requestMatchers("/api/v1/auth/**").permitAll()   // login, register = public
                         .requestMatchers("/admin/**").hasRole("ADMIN") // only for admin
                         .requestMatchers("/error").permitAll() // allow spring boot to return actual exception messages
                         .anyRequest().authenticated() // any request must be authenticated

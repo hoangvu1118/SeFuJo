@@ -20,6 +20,7 @@ public class HealthController {
     private final SearchProfileRepository searchProfileRepository;
     private final UserRepository userRepository;
 
+
     public HealthController(SearchProfileRepository searchProfileRepository, UserRepository userRepository) {
         this.searchProfileRepository = searchProfileRepository;
         this.userRepository = userRepository;

@@ -8,6 +8,7 @@ import com.sefujo.job.entity.Job;
 import com.sefujo.job.repository.CompanyRepository;
 import com.sefujo.job.repository.JobRepository;
 import com.sefujo.job.repository.JobSpecification;
+import com.sefujo.job.source.greenhouse.GreenhouseLocation;
 import com.sefujo.searchprofile.EmploymentType;
 import com.sefujo.searchprofile.WorkplaceType;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @AllArgsConstructor
@@ -70,4 +72,7 @@ public class JobService {
         response.setStatus(job.getStatus());
         return response;
     }
+
+
+
 }
