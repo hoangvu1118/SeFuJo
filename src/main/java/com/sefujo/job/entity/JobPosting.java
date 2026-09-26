@@ -14,16 +14,21 @@ public class JobPosting {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
 
-    @Column(name="job_id")
-    private long jobId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_id", nullable = false)
+    private Job job;
 
-    @Column(name="platform_id")
-    private long platformId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="platform_id")
+    private Platform platform;
 
     @Column(name="external_job_id")
-    private String externalJobId;
+    private String externalJobId; // the actual ID that the platform provide
 
     private String status;
+
+    @Column(name = "source_url", nullable = false, length = 1000)
+    private String sourceUrl;
 
     @Column(name="source_published_at")
     private LocalDateTime sourcePublishedAt; // Track when the Platform publishes

@@ -12,7 +12,7 @@ public class JobLocationFilter {
         if (location == null) {
             return false;
         }
-
+        location = location.toLowerCase(Locale.ROOT);
         return location.contains("vietnam")
                 || location.contains("viet nam")
                 || location.contains("ho chi minh")

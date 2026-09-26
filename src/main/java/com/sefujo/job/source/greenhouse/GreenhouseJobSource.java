@@ -25,6 +25,11 @@ public class GreenhouseJobSource implements JobSource {
     }
 
     @Override
+    public String platformName() {
+        return "Greenhouse";
+    }
+
+    @Override
     public List<RawJobSummary> fetchJobSummaries(String boardToken) {
         GreenhouseJobsResponse response = webClient
                 .get()

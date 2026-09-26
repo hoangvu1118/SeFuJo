@@ -8,6 +8,7 @@ import java.util.List;
 public interface JobSource {
     // sourceKey = board_token (e.g axon)
 
+    String platformName();
     List<RawJobSummary> fetchJobSummaries(String sourceKey);
 
     RawJobPosting fetchJobDetail(

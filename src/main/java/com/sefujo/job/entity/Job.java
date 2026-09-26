@@ -24,6 +24,7 @@ public class Job {
     @Column(name="normalized_title")
     private String normalizedTitle;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
     private String location;
 

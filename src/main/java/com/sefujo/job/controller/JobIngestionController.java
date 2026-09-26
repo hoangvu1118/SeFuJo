@@ -6,10 +6,7 @@ import com.sefujo.job.source.JobSource;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,8 +28,8 @@ public class JobIngestionController {
     public ResponseEntity<List<RawJobPosting>> ingest(
             @PathVariable String boardToken
     ) {
-        return ResponseEntity.ok(
-                ingestionService.ingest(greenhouseSource, boardToken)
-        );
+        List<RawJobPosting> jobs =
+                ingestionService.ingest(greenhouseSource, boardToken);
+        return ResponseEntity.ok(jobs);
     }
 }

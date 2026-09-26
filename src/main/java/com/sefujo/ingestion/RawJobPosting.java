@@ -1,5 +1,6 @@
 package com.sefujo.ingestion;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 public record RawJobPosting(
@@ -10,6 +11,6 @@ public record RawJobPosting(
         String location,
         String description,
         String sourceUrl,
-        OffsetDateTime sourceUpdatedAt,
-        OffsetDateTime sourcePublishedAt
+        LocalDateTime sourceUpdatedAt,
+        LocalDateTime sourcePublishedAt
 ) {}

@@ -20,8 +20,8 @@ public class GreenhouseJobMapper {
                         : detail.location().name(),
                 detail.content(),
                 detail.absoluteUrl(),
-                detail.updatedAt(),
-                detail.firstPublished()
+                detail.updatedAt().toLocalDateTime(),
+                detail.firstPublished().toLocalDateTime()
         );
     }
 }

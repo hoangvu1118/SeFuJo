@@ -1,5 +1,6 @@
 package com.sefujo.job.repository;
 
+import com.sefujo.job.entity.Company;
 import com.sefujo.job.entity.Job;
 import jakarta.persistence.Entity;
 import org.springframework.data.domain.Limit;
@@ -24,4 +25,6 @@ public interface JobRepository extends JpaRepository<Job,Long>, JpaSpecification
     // instead of issuing a new company query for every job.
 
     Optional<Job> findById(long id);
+    // Find the matching job
+    Optional<Job> findByCompanyAndNormalizedTitleAndLocation(Company company, String normalizedTitle, String location);
 }
