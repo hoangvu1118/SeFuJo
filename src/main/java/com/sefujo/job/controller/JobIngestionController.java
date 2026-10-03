@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/admin/ingestion")
+@RequestMapping("/api/v1/admin/ingestion")
 public class JobIngestionController {
     private final JobIngestionService ingestionService;
     JobSource greenhouseSource;

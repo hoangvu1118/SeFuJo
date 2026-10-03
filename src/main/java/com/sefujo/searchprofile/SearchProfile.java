@@ -26,7 +26,7 @@ public class SearchProfile {
     private String name;
 
     @Column(name="level")
-    private String level;
+    private String level; // e.g Intern, Fresher, etc.
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -56,7 +56,7 @@ public class SearchProfile {
             name="search_profile_employment_types",
             joinColumns = @JoinColumn(name="search_profile_id")
     )
-    @Column(name="employment_type")
+    @Column(name="employment_type") // Full Time, Part Time, etc.
     private Set<EmploymentType> employmentTypes = new HashSet<>();
 
 

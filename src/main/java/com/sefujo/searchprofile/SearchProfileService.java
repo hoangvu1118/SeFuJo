@@ -9,6 +9,7 @@ import com.sefujo.searchprofile.dto.SearchProfileResponse;
 import com.sefujo.searchprofile.dto.UpdateSearchProfileRequest;
 import com.sefujo.user.User;
 import com.sefujo.user.UserRepository;
+import com.sefujo.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,7 +24,7 @@ import java.util.HashSet;
 @AllArgsConstructor
 public class SearchProfileService {
     SearchProfileRepository searchProfileRepository;
-    UserRepository userRepository;
+    UserService userService;
 
     private SearchProfileResponse getSearchProfileResponse(SearchProfile saved) {
         SearchProfileResponse response = new SearchProfileResponse();
@@ -43,15 +44,23 @@ public class SearchProfileService {
     public SearchProfileResponse createSearchProfile(CreateSearchProfileRequest request) {
 
         LocalDateTime now = LocalDateTime.now();
-        long userId = getCurrentUserId();
+        long userId = userService.getCurrentUserId();
 
         SearchProfile searchProfileCheck = searchProfileRepository.findByUserId(userId).orElse(null);
         if (searchProfileCheck != null) {
             throw new SearchProfileAlreadyExist("Search Profile Already Exist, please Edit/ Delete the previous version");
         }
 
-        User currentUser = userRepository.findById(userId).orElse(null);
+        User currentUser = userService.getUserById(userId);
 
+        SearchProfile searchProfile = getSearchProfile(request, currentUser, now);
+
+        SearchProfile saved = searchProfileRepository.save(searchProfile);
+
+        return getSearchProfileResponse(saved);
+    }
+
+    private static SearchProfile getSearchProfile(CreateSearchProfileRequest request, User currentUser, LocalDateTime now) {
         SearchProfile searchProfile = new SearchProfile();
         searchProfile.setUser(currentUser);
         searchProfile.setName(request.getName());
@@ -63,16 +72,17 @@ public class SearchProfileService {
         searchProfile.setLocations(request.getLocations());
         searchProfile.setSkills(request.getSkills());
         searchProfile.setWorkplaceTypes(request.getWorkplaceTypes());
-
-        SearchProfile saved = searchProfileRepository.save(searchProfile);
-
-        return getSearchProfileResponse(saved);
+        return searchProfile;
     }
 
+    public SearchProfile getSearchProfileByUSerID(long id) {
+        return searchProfileRepository.findByUserId(id)
+                .orElseThrow(() -> new ResourceNotFound("User not found"));
+    }
 
     public SearchProfileResponse getMySearchProfile() {
-        long userId = getCurrentUserId();
-        SearchProfile searchProfile = searchProfileRepository.findByUserId(userId).orElse(null);
+        long userId = userService.getCurrentUserId();
+        SearchProfile searchProfile = getSearchProfileByUSerID(userId);
         if (searchProfile == null) {
             throw new ResourceNotFound("Search Profile Not Found from UserID: " + userId);
         }
@@ -81,7 +91,7 @@ public class SearchProfileService {
 
     public SearchProfileResponse updateSearchProfile(UpdateSearchProfileRequest request) {
         LocalDateTime now = LocalDateTime.now();
-        long userId = getCurrentUserId();
+        long userId = userService.getCurrentUserId();
         SearchProfile profile = searchProfileRepository.findByUserId(userId).orElse(null);
         if (profile == null) {
             throw new ResourceNotFound("Search Profile Not Found from UserID: " + userId);
@@ -117,7 +127,7 @@ public class SearchProfileService {
     }
 
     public void deleteSearchProfile() {
-        long userId = getCurrentUserId();
+        long userId = userService.getCurrentUserId();
         SearchProfile profile = searchProfileRepository
                 .findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFound("Search Profile Not Found from UserID: " + userId));
@@ -125,16 +135,4 @@ public class SearchProfileService {
         searchProfileRepository.delete(profile);
     }
 
-    private long getCurrentUserId() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication == null) {
-            throw new UserNotAuthenticated("Username not Authenticated yet");
-        }
-        CustomUserDetail userDetail = (CustomUserDetail) authentication.getPrincipal();
-
-        if(userDetail == null) {
-            throw new UsernameNotFoundException("Username not Authenticated yet");
-        }
-        return userDetail.getId();
-    }
 }

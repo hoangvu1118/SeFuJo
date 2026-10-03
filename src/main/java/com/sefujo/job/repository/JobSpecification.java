@@ -5,6 +5,8 @@ import com.sefujo.searchprofile.EmploymentType;
 import com.sefujo.searchprofile.WorkplaceType;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.Set;
+
 // Specification reduces the amount of COMBINATION written in Repository
 // Query : the overall query
 // CB: CriteriaBuilder : create conditions like =, Like, AND, OR
@@ -12,7 +14,7 @@ import org.springframework.data.jpa.domain.Specification;
 public class JobSpecification {
     public static Specification<Job> isOpen() {
         return (root, query, cb) ->
-                cb.equal(root.get("status"), "OPEN");
+                cb.equal(root.get("status"), "open");
     }
     public static Specification<Job> hasTitle(String title) {
         return (root, query, cb) ->
@@ -35,6 +37,14 @@ public class JobSpecification {
                         employmentType
                 );
     }
+    public static Specification<Job> hasEmploymentTypes(
+            Set<EmploymentType> employmentTypes
+    ) {
+        return (root, query, cb) ->
+                employmentTypes == null || employmentTypes.isEmpty()
+                        ? cb.conjunction()
+                        : root.get("employmentType").in(employmentTypes);
+    } // employment_type IN ('INTERNSHIP', 'PART_TIME')
 
     public static Specification<Job> hasWorkplaceType(
             WorkplaceType workplaceType
@@ -47,6 +57,14 @@ public class JobSpecification {
                         workplaceType
                 );
     }
+    public static Specification<Job> hasWorkplaceTypes(
+            Set<WorkplaceType> workplaceTypes
+    ) {
+        return (root, query, cb) ->
+                workplaceTypes == null || workplaceTypes.isEmpty()
+                        ? cb.conjunction()
+                        : root.get("workplaceType").in(workplaceTypes);
+    }
 
     public static Specification<Job> hasLocation(String location) {
         return (root, query, cb) ->
@@ -57,4 +75,32 @@ public class JobSpecification {
                         "%" + location.toLowerCase() + "%"
                 );
     }
+    public static Specification<Job> hasAnyLocation(
+            Set<String> locations
+    ) {
+        return (root, query, cb) -> {
+            if (locations == null || locations.isEmpty()) {
+                return cb.conjunction();
+            }
+
+            return cb.or(
+                    locations.stream()
+                            .map(location ->
+                                    cb.like(
+                                            cb.lower(root.get("location")),
+                                            "%" + location.toLowerCase() + "%"
+                                    )
+                            )
+                            .toArray(jakarta.persistence.criteria.Predicate[]::new)
+            );
+        };
+    }
 }
+
+// A Predicate is a condition to tell if the evaluation is true or false
+
+//      cb.like(
+//        cb.lower(root.get("location")),
+//        "%hanoi%"
+//       )
+// THIS RETURNS A PREDICATE
